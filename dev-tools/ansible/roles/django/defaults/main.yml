@@ -43,6 +43,8 @@ django_ssl_vhost_template: "django-ssl-vhost.conf.j2"
 django_settings_local_template: "settings_local.py.j2"
 django_extra_settings: {}
 django_database_name: "django_{{ gateway_id }}"
+django_db_username: "airavata"
+django_db_password: "123456"
 django_hidden_airavata_apps: "[]"
 django_tus_data_dir: "{{user_data_dir}}/tus-temp-dir"
 django_file_upload_max_file_size_mb: 64
@@ -85,11 +87,11 @@ oauth_callback_url: "https://{{ vhost_servername }}/auth/callback"
 
 
 ## Airavata Client related variables
-airavata_django_repo: "https://github.com/apache/airavata-django-portal.git"
-airavata_django_git_branch: "master"
+airavata_django_repo: "https://github.com/isururanawaka/airavata-django-portal.git"
+airavata_django_git_branch: "custos-integration"
 airavata_django_checkout: "{{ doc_root_dir}}/airavata-django-portal"
 airavata_django_extra_dependencies: []
-gateway_id: "{{ default_gateway }}"
+gateway_id: "airavata-custos-integration"
 # relative to document root dir
 experiment_data_dir: "{{ user_data_dir }}"
 file_upload_tmp_dir: "{{ experiment_data_dir }}/tmp/"

@@ -25,7 +25,7 @@
 # Update all entries below that have CHANGEME as the value
 
 pga_repo: "https://github.com/apache/airavata-php-gateway.git"
-pga_git_branch: "master"
+pga_git_branch: "custos-integration"
 user: "pga"
 group: "pga"
 doc_root_dir: "/var/www/portals/{{ gateway_id }}"
@@ -54,7 +54,7 @@ oauth_callback_url: "http://{{ vhost_servername }}/callback-url"
 # or if SSL then:
 #oauth_callback_url: "https://{{ vhost_servername }}/callback-url"
 
-gateway_id: "default"
+gateway_id: "aci-scigap"
 # relative to document root dir
 experiment_data_dir: "{{ user_data_dir }}/exp-dir"
 gateway_data_store_resource_id: "CHANGEME"
@@ -62,7 +62,7 @@ gateway_data_store_ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClwPzT
 
 ## Portal related variables
 super_admin_portal: "true"
-admin_emails: "['CHANGEME']"
+admin_emails: "['isjarana@iu.edu']"
 #example: admin_emails: "['emailaddress1@example.com', 'emailaddress2@example.com']"
 portal_email_username: ""
 portal_email_password: ""

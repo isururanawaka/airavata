@@ -1,25 +1,3 @@
-{#
-#
-#
-# Licensed to the Apache Software Foundation (ASF) under one
-# or more contributor license agreements.  See the NOTICE file
-# distributed with this work for additional information
-# regarding copyright ownership.  The ASF licenses this file
-# to you under the Apache License, Version 2.0 (the
-# "License"); you may not use this file except in compliance
-# with the License.  You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing,
-# software distributed under the License is distributed on an
-# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-# KIND, either express or implied.  See the License for the
-# specific language governing permissions and limitations
-# under the License.
-#
-#}
-
 """
 Override default Django settings for a particular instance.
 
@@ -34,125 +12,138 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Django - general settings
-DEBUG = {{ django_debug | ternary("True", "False") }}
-STATIC_ROOT = "{{ doc_root_dir }}/static/"
-ALLOWED_HOSTS = ['{{ vhost_servername }}']
+# Uncomment and specify for production deployments
+# DEBUG = False
+STATIC_ROOT = "/var/www/portals/django-airavata-custos-integration/static/"
+ALLOWED_HOSTS = ['aci.general.scigap.org']
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': '{{ django_database_name }}',
-        'HOST': '{{ db_server }}',
-        'USER': '{{ django_db_username }}',
-        'PASSWORD': '{{ django_db_password }}'
-    },
-    'OPTIONS': {
-        'init_command': 'SET default_storage_engine=INNODB,collation_connection=utf8_bin',
-    }
-}
+# Django - database settings
+# MySQL - to use MySQL, uncomment and specify the settings
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': '...',
+#         'HOST': '...',
+#         'USER': '...',
+#         'PASSWORD': '...'
+#     },
+#     'OPTIONS': {
+#         'init_command': 'SET default_storage_engine=INNODB,collation_connection=utf8_bin',
+#     }
+# }
 
 # Django - Email settings
 # Uncomment and specify the following for sending emails (default email backend
 # just prints to the console)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '{{ portal_email_host }}'
-EMAIL_PORT = {{ portal_email_port }}
-EMAIL_HOST_USER = '{{ portal_email_username }}'
-EMAIL_HOST_PASSWORD = '{{ portal_email_password }}'
-EMAIL_USE_TLS = {{ portal_email_tls | ternary("True", "False") }}
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = '...'
+# EMAIL_PORT = '...'
+# EMAIL_HOST_USER = '...'
+# EMAIL_HOST_PASSWORD = '...'
+# EMAIL_USE_TLS = True
 # ADMINS receive error emails
-ADMINS = {{ django_error_emails }}
-# PORTAL_ADMINS receive administrative emails, like when a new user is created
+# ADMINS = [('Admin Name', 'admin@example.com')]
+# Optional: PORTAL_ADMINS receive administrative emails, like when a new user is created
 # This can be set to a different value than ADMINS so that the PORTAL_ADMINS
-# don't receive error emails
-PORTAL_ADMINS = {{ admin_emails }}
-SERVER_EMAIL = '{{ portal_server_email }}'
-
-# Keycloak Configuration
-KEYCLOAK_CLIENT_ID = '{{ oauth_client_key }}'
-KEYCLOAK_CLIENT_SECRET = '{{ oauth_client_secret }}'
-KEYCLOAK_AUTHORIZE_URL = '{{ oauth_service_url }}/realms/{{ tenant_domain }}/protocol/openid-connect/auth'
-KEYCLOAK_TOKEN_URL = '{{ oauth_service_url }}/realms/{{ tenant_domain }}/protocol/openid-connect/token'
-KEYCLOAK_USERINFO_URL = '{{ oauth_service_url }}/realms/{{ tenant_domain }}/protocol/openid-connect/userinfo'
-KEYCLOAK_LOGOUT_URL = '{{ oauth_service_url }}/realms/{{ tenant_domain }}/protocol/openid-connect/logout'
-{% if django_keycloak_ca_certfile_path %}
-KEYCLOAK_CA_CERTFILE = {{ django_keycloak_ca_certfile_path }}
-{% endif %}
-KEYCLOAK_VERIFY_SSL = True
+# don't receive error emails. Defaults to the same value as ADMINS.
+# PORTAL_ADMINS = ADMINS
+# SERVER_EMAIL = 'portal@example.com'
 
 AUTHENTICATION_OPTIONS = {
-
-    {% if auth_options.password is defined %}
+    # Control whether username/password authentication is allowed
     'password': {
-        'name': '{{ auth_options.password.name }}',
-        {% if auth_options.password.logo is defined %}
-        'logo': '{{ auth_options.password.logo }}',
-        {% endif %}
+        'name': 'your account',
+        # Uncomment following to hide username/password login except from directly going to /auth/login-password URL
+        # 'hidden': True,
     },
-    {% endif %}
-    {% if auth_options.external is defined and auth_options.external %}
+    # Can have multiple external logins
     'external': [
-        {% for external in auth_options.external %}
         {
-            'idp_alias': '{{ external.idp_alias }}',
-            'name': '{{ external.name }}',
-            {% if external.logo is defined %}
-            'logo': '{{ external.logo }}',
-            {% endif %}
-        },
-        {% endfor %}
+            'idp_alias': 'oidc',
+            'name': 'CILogon',
+        }
     ]
-    {% endif %}
 }
 
 # Airavata API Configuration
-GATEWAY_ID = '{{ gateway_id }}'
-AIRAVATA_API_HOST = '{{ api_server_host }}'
-{% if api_secured %}
-AIRAVATA_API_PORT = {{ api_server_tls_port }}
+GATEWAY_ID = 'airavata-custos-integration'
+AIRAVATA_API_HOST = '149.165.171.13'
+AIRAVATA_API_PORT = 9930
 AIRAVATA_API_SECURE = True
-{% else %}
-AIRAVATA_API_PORT = {{ api_server_port }}
-AIRAVATA_API_SECURE = False
-{% endif %}
-GATEWAY_DATA_STORE_RESOURCE_ID = '{{ gateway_data_store_resource_id }}'
-GATEWAY_DATA_STORE_DIR = '{{ experiment_data_dir }}'
-GATEWAY_DATA_STORE_HOSTNAME = '{{ gateway_data_store_hostname }}'
-FILE_UPLOAD_TEMP_DIR = "{{ file_upload_tmp_dir }}"
+GATEWAY_DATA_STORE_RESOURCE_ID = 'aci.pga.scigap.org_30a23505-dbc0-4b2b-85a8-6860d8b6a27d'
+GATEWAY_DATA_STORE_DIR = '/tmp/experiment-data-dir'
+GATEWAY_DATA_STORE_HOSTNAME = 'aci.pga.scigap.org'
+FILE_UPLOAD_TEMP_DIR = '/tmp/experiment-data-dir'
 
 # Profile Service Configuration
-PROFILE_SERVICE_HOST = '{{ profile_service_host }}'
-PROFILE_SERVICE_PORT = {{ profile_service_port }}
+PROFILE_SERVICE_HOST = '149.165.171.13'
+PROFILE_SERVICE_PORT = 8962
 PROFILE_SERVICE_SECURE = False
 
 # Sharing API Configuration
-SHARING_API_HOST = '{{ sharing_registry_host }}'
-SHARING_API_PORT = {{ sharing_registry_port }}
+SHARING_API_HOST = '149.165.171.13'
+SHARING_API_PORT = 7878
 SHARING_API_SECURE = False
 
+# Custos Configuration
+CUSTOS_CLIENT_ID = 'custos-vvgebwxxb62qspfmbeqk-10000413'
+CUSTOS_CLIENT_SEC = 'hBhfF2glyMhrNTqG9Vi27Dmn1t40jy3mXlkkxTYG'
+CUSTOS_HOST = 'custos.scigap.org'
+CUSTOS_PORT = '31499'
+
 # Portal settings
-PORTAL_TITLE = '{{ portal_title }}'
+PORTAL_TITLE = 'Django Airavata Gateway'
 
-# Hidden Airavata apps (not all gateways need all functionality)
-HIDDEN_AIRAVATA_APPS = {{ django_hidden_airavata_apps }}
+# Tus upload - uncomment the following to enable tus uploads
+# Override and set to a valid tus endpoint
+# TUS_ENDPOINT = "https://tus.domainname.org/files/"
+# Override and set to the directory where tus uploads will be stored.
+# TUS_DATA_DIR = "/path/to/tus-temp-dir"
 
-{% if django_tus_endpoint is defined and django_tus_endpoint %}
-# Tus uploads
-TUS_ENDPOINT = "{{ django_tus_endpoint }}"
-TUS_DATA_DIR = "{{ django_tus_data_dir }}"
-{% endif %}
+# Legacy (PGA) Portal link - uncomment to provide a link to the legacy portal
+# PGA_URL = '...'
 
-FILE_UPLOAD_MAX_FILE_SIZE = {{ django_file_upload_max_file_size_mb }} * 1024 * 1024
+# Google Analytics Tracking ID ("UA-XXXXXXXX-X"). If this setting is set, then
+# Google Analytics tracking will be added to all pages.
+# GOOGLE_ANALYTICS_TRACKING_ID = '...'
 
-{% if django_pga_url is defined and django_pga_url %}
-PGA_URL = "{{ django_pga_url }}"
-{% endif %}
-
-{% if django_google_analytics_tracking_id %}
-GOOGLE_ANALYTICS_TRACKING_ID = "{{ django_google_analytics_tracking_id }}"
-{% endif %}
-
-# Extra settings
-{% for extra_setting in django_extra_settings.items() | list %}
-{{ extra_setting[0] }} = {{ extra_setting[1] | to_nice_json }}
-{% endfor %}
+# Logging configuration. Uncomment following to override default log configuration
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'filters': {
+#         'require_debug_false': {
+#             '()': 'django.utils.log.RequireDebugFalse',
+#         },
+#         'require_debug_true': {
+#             '()': 'django.utils.log.RequireDebugTrue',
+#         },
+#     },
+#     'formatters': {
+#         'verbose': {
+#             'format': '[%(asctime)s %(name)s:%(lineno)d %(levelname)s] %(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'verbose'
+#         },
+#         'mail_admins': {
+#             'filters': ['require_debug_false'],
+#             'level': 'ERROR',
+#             'class': 'django.utils.log.AdminEmailHandler',
+#             'include_html': True,
+#         }
+#     },
+#     'loggers': {
+#         'django_airavata': {
+#             'handlers': ['console', 'mail_admins'],
+#             'level': 'DEBUG' if DEBUG else 'INFO'
+#         },
+#         'root': {
+#             'handlers': ['console', 'mail_admins'],
+#             'level': 'WARNING'
+#         }
+#     },
+# }
