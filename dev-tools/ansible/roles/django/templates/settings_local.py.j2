@@ -14,23 +14,23 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Django - general settings
 # Uncomment and specify for production deployments
 # DEBUG = False
-STATIC_ROOT = "/var/www/portals/django-airavata-custos-integration/static/"
-ALLOWED_HOSTS = ['aci.general.scigap.org']
+STATIC_ROOT = "/var/www/portals/django-custos-testing-gateway/static/"
+ALLOWED_HOSTS = ['aci.testing2.scigap.org']
 
 # Django - database settings
 # MySQL - to use MySQL, uncomment and specify the settings
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': '...',
-#         'HOST': '...',
-#         'USER': '...',
-#         'PASSWORD': '...'
-#     },
-#     'OPTIONS': {
-#         'init_command': 'SET default_storage_engine=INNODB,collation_connection=utf8_bin',
-#     }
-# }
+DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.mysql',
+         'NAME': 'django_custos-testing-gateway',
+         'HOST': '192.168.0.29',
+         'USER': 'django',
+         'PASSWORD': '123456'
+     },
+    'OPTIONS': {
+         'init_command': 'SET default_storage_engine=INNODB,collation_connection=utf8_bin',
+     }
+ }
 
 # Django - Email settings
 # Uncomment and specify the following for sending emails (default email backend
@@ -66,13 +66,13 @@ AUTHENTICATION_OPTIONS = {
 }
 
 # Airavata API Configuration
-GATEWAY_ID = 'airavata-custos-integration'
+GATEWAY_ID = 'custos-testing-gateway'
 AIRAVATA_API_HOST = '149.165.171.13'
 AIRAVATA_API_PORT = 9930
 AIRAVATA_API_SECURE = True
-GATEWAY_DATA_STORE_RESOURCE_ID = 'aci.pga.scigap.org_30a23505-dbc0-4b2b-85a8-6860d8b6a27d'
+GATEWAY_DATA_STORE_RESOURCE_ID = 'aci.testing2.scigap.org_3b7b5160-5a96-4914-9018-ca17038e26f7'
 GATEWAY_DATA_STORE_DIR = '/tmp/experiment-data-dir'
-GATEWAY_DATA_STORE_HOSTNAME = 'aci.pga.scigap.org'
+GATEWAY_DATA_STORE_HOSTNAME = 'aci.testing2.scigap.org'
 FILE_UPLOAD_TEMP_DIR = '/tmp/experiment-data-dir'
 
 # Profile Service Configuration
@@ -86,8 +86,8 @@ SHARING_API_PORT = 7878
 SHARING_API_SECURE = False
 
 # Custos Configuration
-CUSTOS_CLIENT_ID = 'custos-vvgebwxxb62qspfmbeqk-10000413'
-CUSTOS_CLIENT_SEC = 'hBhfF2glyMhrNTqG9Vi27Dmn1t40jy3mXlkkxTYG'
+CUSTOS_CLIENT_ID = 'custos-nc7bwe4hfzm0q3ugcb6w-10000457'
+CUSTOS_CLIENT_SEC = '9mQ2pm1awqsx5RUDicWhsksKnuc1OELzP5piJ8wH'
 CUSTOS_HOST = 'custos.scigap.org'
 CUSTOS_PORT = '31499'
 

@@ -19,3 +19,6 @@
 #
 
 mysql_root_password: "admin"
+django_database_name: "django_custos-testing-gateway"
+django_db_username: "django"
+django_db_password: "123456"
