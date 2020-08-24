@@ -52,9 +52,9 @@
     - restart rabbitmq
   become: yes
 
-- name: Create rabbitmq vhost {{ rabbitmq_vhost }}
-  rabbitmq_vhost: name="{{ rabbitmq_vhost }}" state=present
-  become: yes
+#- name: Create rabbitmq vhost {{ rabbitmq_vhost }}
+#  rabbitmq_vhost: name="{{ rabbitmq_vhost }}" state=present
+#  become: yes
 
 - name: Add user {{ rabbitmq_user }} to vhost {{ rabbitmq_vhost }}  and give permission
   rabbitmq_user: user="{{ rabbitmq_user }}"
