@@ -218,10 +218,8 @@ public class SharingServiceDBEventHandler implements MessageHandler {
                                         sharingManagementClient.createPermissionType(custosId, applicationEntityType);
                                     }
                                 }
-
                                 break;
                         }
-
 
                         break;
 

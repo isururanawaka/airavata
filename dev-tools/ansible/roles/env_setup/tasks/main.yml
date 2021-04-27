@@ -57,4 +57,52 @@
   firewalld: port="22/tcp"
              zone=public permanent=true state=enabled immediate=yes
   become: yes
+  when: ansible_os_family == "RedHat"
+
+# Issues with firewalld module on Ubuntu https://github.com/ansible/ansible/issues/24855
+# So as workaround, just calling firewall-cmd directly for now
+- name: open firewall port 22 for SSH connections (Debian)
+  command: firewall-cmd --zone=public --add-port=22/tcp
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: open firewall port 22 for SSH connections permanently (Debian)
+  command: firewall-cmd --zone=public --permanent --add-port=22/tcp
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: Allow subnets to access zabbix
+  firewalld:
+    zone: public
+    permanent: yes
+    state: enabled
+    immediate: yes
+    rich_rule: rule family=ipv4 source address="{{ item }}" port port=10050 protocol=tcp accept
+  with_items:
+    - "{{ monitoring_subnets }}"
+  become: yes
+  become_user: root
+  when: ansible_os_family == "RedHat"
+
+# Automatic security updates installation
+
+- name: Install yum-cron, yum-utils (RedHat)
+  yum: name={{ item }} state=latest update_cache=yes
+  become: yes
+  when: ansible_os_family == "RedHat"
+  with_items:
+    - yum-cron
+    - yum-utils
+
+- name: Copy yum-cron.conf config file
+  copy:
+    src: yum-cron.conf
+    dest: /etc/yum/yum-cron.conf
+  become: yes
+  when: ansible_os_family == "RedHat"
+
+- name: Enable and start yum-cron
+  service: name=yum-cron state=started enabled=yes daemon_reload=yes
+  become: yes
+  when: ansible_os_family == "RedHat"
 ...

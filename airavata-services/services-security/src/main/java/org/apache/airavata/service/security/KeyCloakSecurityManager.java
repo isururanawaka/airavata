@@ -41,7 +41,9 @@ import org.apache.airavata.sharing.registry.service.cpi.SharingRegistryService;
 import org.apache.custos.group.management.client.GroupManagementClient;
 import org.apache.custos.identity.management.client.IdentityManagementClient;
 import org.apache.custos.identity.service.User;
+import org.apache.custos.resource.secret.management.client.ResourceSecretManagementClient;
 import org.apache.custos.sharing.management.client.SharingManagementClient;
+import org.apache.custos.tenant.manamgement.client.TenantManagementClient;
 import org.apache.custos.user.management.client.UserManagementClient;
 import org.apache.custos.user.profile.service.GetAllGroupsResponse;
 import org.apache.custos.user.profile.service.Group;
@@ -117,8 +119,11 @@ public class KeyCloakSecurityManager implements AiravataSecurityManager {
     private RegistryService.Client registryServiceClient = null;
     private SharingRegistryService.Client sharingRegistryServiceClient = null;
 
-    private SharingManagementClient sharingManagementClient;
     private GroupManagementClient groupManagementClient;
+    private ResourceSecretManagementClient credentialStoreClient;
+    private TenantManagementClient tenantManagementClient;
+
+    private SharingManagementClient sharingManagementClient;
     private UserManagementClient userManagementClient;
     private IdentityManagementClient identityManagementClient;
 
@@ -267,7 +272,7 @@ public class KeyCloakSecurityManager implements AiravataSecurityManager {
                     throw new AiravataSecurityException("Error in reading from the authorization cache.");
                 }
             } else {
-                GatewayGroupMembership gatewayGroupMembership = getGatewayGroupMembership(authzToken, subject, accessToken, gatewayId);
+                GatewayGroupMembership gatewayGroupMembership = getGatewayGroupMembership(authzToken,subject, accessToken, gatewayId);
                 return hasPermission(gatewayGroupMembership, action);
             }
 

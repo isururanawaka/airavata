@@ -27,15 +27,33 @@
     - python2-acme
     - python2-certbot-apache
   become_user: root
+  when: ansible_os_family == "RedHat"
+
+- name: add Certbot PPA repository
+  apt_repository:
+    repo: "ppa:certbot/certbot"
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: Install Certbot and dependencies (Debian)
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - certbot
+    - python-certbot-apache
+  become: yes
+  when: ansible_os_family == "Debian"
+
+# Note: on Ubuntu crontab is automatically created to run cert renewal. Only
+# CentOS requires enabling the certbot-renew timer.
 
 - name: enable certbot (letsencrypt) renewal
   systemd:
-    state: started
     enabled: true
     name: certbot-renew
     daemon_reload: true
   become: true
   become_user: root
+  when: ansible_os_family == "RedHat"
 
 - name: enable certbot (letsencrypt) renewal timer
   systemd:
@@ -44,4 +62,13 @@
     name: certbot-renew.timer
     daemon_reload: true
   become: true
+  become_user: root
+  when: ansible_os_family == "RedHat"
+
+- name: copy check-domains.sh script (Zabbix remote command)
+  copy:
+    src: check-domains.sh
+    dest: /usr/local/bin/check-domains.sh
+    mode: 0755
+  become: yes
   become_user: root

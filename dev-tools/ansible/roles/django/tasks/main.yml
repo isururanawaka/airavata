@@ -27,6 +27,14 @@
   with_items:
   - "{{ groups['database'] }}"
 
+- name: Run tasks to setup Django database
+  include: database.yml
+  delegate_to: "{{ item }}"
+  become: yes
+  become_user: "{{ hostvars[item]['user'] }}"
+  with_items:
+  - "{{ django_database_hosts }}"
+
 - name: Create root directory
   file: path="{{ doc_root_dir }}" state=directory owner="{{user}}" group="{{group}}"
   become: yes
@@ -243,6 +251,16 @@
   become: yes
   when: ansible_os_family == "RedHat"
 
+# some Python libraries want to write files to /tmp and execute them, see
+# https://bugzilla.redhat.com/show_bug.cgi?id=645193 for more details
+- name: Allow Django code to exec in tmp directory
+  seboolean:
+    name: httpd_tmp_exec
+    state: yes
+    persistent: yes
+  become: yes
+  when: ansible_os_family == "RedHat"
+
 - name: run restorecon on those directories
   command: restorecon -F -R {{ doc_root_dir }}
   become: yes
@@ -261,6 +279,13 @@
   notify:
     - restart httpd
   when: vhost_ssl
+
+- name: Enable site in Apache (Debian)
+  command: a2ensite {{ django_vhost_conf_name }}
+  become: yes
+  notify:
+    - restart httpd
+  when: ansible_os_family == "Debian"
 
 - name: copy user's SSH key for the gateway data store
   authorized_key:
@@ -285,3 +310,11 @@
     state: absent
     path: "{{ airavata_django_portal_tempdir.path }}"
   run_once: true
+
+- name: add domain to Zabbix monitoring checklist
+  lineinfile:
+    path: /etc/zabbix/domain_checklist
+    line: "{{ vhost_servername }}"
+    create: yes
+  become: yes
+  when: vhost_ssl

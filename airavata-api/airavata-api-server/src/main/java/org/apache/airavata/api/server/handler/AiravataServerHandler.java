@@ -3054,8 +3054,6 @@ public class AiravataServerHandler implements Airavata.Iface {
                                               ApplicationInterfaceDescription applicationInterface) throws InvalidRequestException,
             AiravataClientException, AiravataSystemException, AuthorizationException, TException {
         RegistryService.Client regClient = registryClientPool.getResource();
-
-        logger.info("Calling #########  updateApplicationInterface");
         try {
             boolean result = regClient.updateApplicationInterface(appInterfaceId, applicationInterface);
             registryClientPool.returnResource(regClient);
@@ -4815,12 +4813,13 @@ public class AiravataServerHandler implements Airavata.Iface {
     @SecurityCheck
     public UserComputeResourcePreference setupUserComputeResourcePreferencesForSSH(AuthzToken authzToken, String computeResourceId, String userId, String airavataCredStoreToken) throws InvalidRequestException, AiravataClientException, AiravataSystemException, AuthorizationException, TException {
         String gatewayId = authzToken.getClaimsMap().get(Constants.GATEWAY_ID);
+        CredentialStoreService.Client csClient = csClientPool.getResource();
         String custosId = authzToken.getClaimsMap().get(Constants.CUSTOS_ID);
-        logger.info("Calling #########  setupUserComputeResourcePreferencesForSSH");
-        org.apache.airavata.model.credential.store.SSHCredential sshCredential1 = null;
+        SSHCredential sshCredential = null;
+        org.apache.airavata.model.credential.store.SSHCredential   sshCredential1;
         try {
-            SSHCredential sshCredential = resourceSecretClient.getSSHCredential(custosId, airavataCredStoreToken, false);
-            sshCredential1 = CustosToAiravataDataModelMapper.transform(sshCredential, gatewayId);
+             sshCredential = resourceSecretClient.getSSHCredential(custosId, airavataCredStoreToken, false);
+             sshCredential1 = CustosToAiravataDataModelMapper.transform(sshCredential, gatewayId);
         } catch (Exception e) {
             logger.error("Error occurred while retrieving SSH Credential", e);
             AiravataSystemException exception = new AiravataSystemException();
@@ -5622,8 +5621,12 @@ public class AiravataServerHandler implements Airavata.Iface {
                     throw new Exception("Not allowed to remove Read Only Admins group's READ access.");
                 }
                 if (groupPermissionList.containsKey(gatewayGroups.getAdminsGroupId())
+                        && groupPermissionList.get(gatewayGroups.getAdminsGroupId()).equals(ResourcePermissionType.READ)) {
+                    throw new Exception("Not allowed to remove Admins group's READ access.");
+                }
+                if (groupPermissionList.containsKey(gatewayGroups.getAdminsGroupId())
                         && groupPermissionList.get(gatewayGroups.getAdminsGroupId()).equals(ResourcePermissionType.MANAGE_SHARING)) {
-                    throw new Exception("Not allowed to remove Admins group's SHARING access.");
+                    throw new Exception("Not allowed to remove Admins group's MANAGE_SHARING access.");
                 }
             }
             for (Map.Entry<String, ResourcePermissionType> groupPermission : groupPermissionList.entrySet()) {

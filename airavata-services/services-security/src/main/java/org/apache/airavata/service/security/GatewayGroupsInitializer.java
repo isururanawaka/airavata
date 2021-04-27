@@ -47,6 +47,11 @@ public class GatewayGroupsInitializer {
 
     private final static Logger logger = LoggerFactory.getLogger(KeyCloakSecurityManager.class);
 
+    private RegistryService.Client registryClient;
+    private GroupManagementClient groupManagementClient;
+    private ResourceSecretManagementClient credentialStoreClient;
+    private TenantManagementClient tenantManagementClient;
+
     public static GatewayGroups initializeGatewayGroups(String gatewayId, String custosId) {
         RegistryService.Client registryClient = createRegistryClient();
         try {
@@ -67,10 +72,6 @@ public class GatewayGroupsInitializer {
         }
     }
 
-    private RegistryService.Client registryClient;
-    private GroupManagementClient groupManagementClient;
-    private ResourceSecretManagementClient credentialStoreClient;
-    private TenantManagementClient tenantManagementClient;
 
     public GatewayGroupsInitializer(RegistryService.Client registryClient, GroupManagementClient groupManagementClient,
                                     ResourceSecretManagementClient credentialStoreClient,
@@ -110,7 +111,12 @@ public class GatewayGroupsInitializer {
                 "Group of admin users with read-only access.", custosId);
         gatewayGroups.setReadOnlyAdminsGroupId(readOnlyAdminsGroup.getGroupId());
 
-        registryClient.createGatewayGroups(gatewayGroups);
+        try {
+            registryClient.createGatewayGroups(gatewayGroups);
+        } catch (TException e) {
+            logger.error("Gateway groups created in Sharing Catalog failed to save GatewayGroups entity in Registry", e);
+            throw e;
+        }
 
         return gatewayGroups;
     }
