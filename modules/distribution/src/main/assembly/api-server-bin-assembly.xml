@@ -165,6 +165,7 @@
             <outputDirectory>lib</outputDirectory>
             <includes>
 <!--                <include>*:*:jar</include>-->
+                <include>org.apache.airavata:airavata-api-server</include>
                 <include>org.apache.airavata:airavata-api-stubs</include>
                 <include>org.apache.airavata:airavata-base-api</include>
                 <include>org.apache.airavata:airavata-data-models</include>
