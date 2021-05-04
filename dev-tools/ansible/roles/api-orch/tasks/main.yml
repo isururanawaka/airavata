@@ -59,7 +59,7 @@
 
 
 - name: Copy Airavata server properties file
-  template: src=airavata-server.properties.j2
+  template: src={{ airavata_properties_template }}
             dest="{{ api_orch_dir }}/{{ airavata_dist }}/bin/airavata-server.properties"
             owner={{ user }}
             group={{ group }}

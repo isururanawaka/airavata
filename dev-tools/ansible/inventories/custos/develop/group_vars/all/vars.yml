@@ -78,6 +78,12 @@ enable_sharing: "true"
 iam_server_url: "https://iamdev.scigap.org/auth"
 iam_server_super_admin_username: "admin"
 iam_server_super_admin_password: "{{ vault_iam_server_super_admin_password }}"
+default_iam_auth_id: "pga"
+default_iam_auth_secret: "df408bc7-39cd-4a9a-8638-256c681115f0"
+
+airavata_properties_template: "{{ inventory_dir }}/templates/airavata-server.properties.j2"
+
+java_version: "java-11-openjdk-devel-11.0.10.0.9-0.el7_9.x86_64"
 
 # Orchestrator  related variables
 orchestrator_name: "orchestrator-node0"
@@ -176,6 +182,13 @@ parser_broker_topic: "completed-messages"
 parser_broker_consumer_group: "ParsingConsumer"
 parser_storage_resource_id: "pgadev.scigap.org_7ddf28fd-d503-4ff8-bbc5-3279a7c3b99e"
 parser_broker_publisher_id: "ParserProducer"
+
+# Custos related vairables
+custos_server_host: "custos.scigap.org"
+custos_server_port: 31499
+custos_client_id: "{{ vault_custos_client_id }}"
+custos_client_sec: "{{ vault_custos_client_secret }}"
+
 
 thrift_client_pool_abandoned_removal_enabled: true
 thrift_client_pool_abandoned_removal_logged: true
