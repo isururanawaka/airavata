@@ -165,13 +165,6 @@
             <outputDirectory>lib</outputDirectory>
             <includes>
 <!--                <include>*:*:jar</include>-->
-                <include>org.apache.airavata:airavata-api-server</include>
-                <include>org.apache.airavata:profile-service-server</include>
-                <include>org.apache.airavata:airavata-credential-store</include>
-                <include>org.apache.airavata:airavata-orchestrator-service</include>
-                <include>org.apache.airavata:registry-api-service</include>
-                <include>org.apache.airavata:airavata-standalone-server</include>
-                <include>org.apache.airavata:airavata-sharing-registry-server</include>
                 <include>org.apache.httpcomponents:httpcore</include>
                 <include>io.grpc:grpc-context</include>
                 <include>org.apache.openjpa:openjpa</include>
@@ -182,6 +175,7 @@
                 <include>jakarta.validation:jakarta.validation-api</include>
                 <include>org.springframework.boot:spring-boot-starter-aop</include>
                 <include>log4j:log4j</include>
+                <include>org.apache.airavata:registry-api-service</include>
                 <include>org.springframework.boot:spring-boot-starter-tomcat</include>
                 <include>org.apache.airavata:airavata-data-models</include>
                 <include>junit:junit</include>
@@ -278,6 +272,7 @@
                 <include>com.squareup.okio:okio</include>
                 <include>org.slf4j:log4j-over-slf4j</include>
                 <include>org.apache.zookeeper:zookeeper</include>
+                <include>org.apache.airavata:profile-service-server</include>
                 <include>org.json:json</include>
                 <include>io.zipkin.brave:brave-instrumentation-spring-rabbit</include>
                 <include>com.google.errorprone:error_prone_annotations</include>
@@ -316,6 +311,7 @@
                 <include>org.apache.derby:derbynet</include>
                 <include>io.sundr:builder-annotations</include>
                 <include>edu.uiuc.ncsa.myproxy:oa4mp-client-api</include>
+                <include>org.apache.airavata:airavata-orchestrator-service</include>
                 <include>org.apache.commons:commons-lang3</include>
                 <include>org.keycloak:keycloak-common</include>
                 <include>io.zipkin.brave:brave-instrumentation-httpclient</include>
@@ -377,6 +373,7 @@
                 <include>io.github.lognet:grpc-spring-boot-starter</include>
                 <include>io.sundr:resourcecify-annotations</include>
                 <include>org.apache.curator:curator-framework</include>
+                <include>org.apache.airavata:airavata-standalone-server</include>
                 <include>io.grpc:grpc-api</include>
                 <include>org.apache.commons:commons-compress</include>
                 <include>net.sourceforge.serp:serp</include>
@@ -437,6 +434,7 @@
                 <include>org.aspectj:aspectjrt</include>
                 <include>org.apache.commons:commons-collections4</include>
                 <include>com.fasterxml.jackson.module:jackson-module-parameter-names</include>
+                <include>org.apache.airavata:airavata-sharing-registry-server</include>
                 <include>net.oauth.core:oauth</include>
                 <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.antlr</include>
                 <include>org.apache.custos:group-management-service</include>
@@ -465,6 +463,7 @@
                 <include>io.netty:netty-codec-http</include>
                 <include>org.slf4j:slf4j-log4j12</include>
                 <include>org.hdrhistogram:HdrHistogram</include>
+                <include>org.apache.airavata:db-event-manager</include>
             </includes>
             <excludes>
                 <exclude>mysql:mysql-connector-java</exclude>
