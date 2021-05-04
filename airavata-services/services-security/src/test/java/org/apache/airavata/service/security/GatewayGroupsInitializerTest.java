@@ -86,7 +86,7 @@ public class GatewayGroupsInitializerTest {
             mockSharingRegistryClient.isUserExists(GATEWAY_ID, ADMIN_OWNER_ID); result = doesAdminUserExist;
         }};
 
-        GatewayGroups gatewayGroups = gatewayGroupsInitializer.initialize(GATEWAY_ID);
+        GatewayGroups gatewayGroups = gatewayGroupsInitializer.initialize(null,GATEWAY_ID);
         Assert.assertEquals(GATEWAY_ID, gatewayGroups.getGatewayId());
 
         new Verifications() {{

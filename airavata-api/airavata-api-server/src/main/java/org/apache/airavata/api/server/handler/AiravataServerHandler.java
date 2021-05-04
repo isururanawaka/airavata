@@ -1601,7 +1601,7 @@ public class AiravataServerHandler implements Airavata.Iface {
                             .build();
                     sharingManagementClient.createEntity(custosId, entity);
 
-                    shareEntityWithAdminGatewayGroups(regClient, custosId, experiment.getGatewayId(), entity);
+                    shareEntityWithAdminGatewayGroups(authzToken,regClient, custosId, experiment.getGatewayId(), entity);
                 } catch (Exception ex) {
                     logger.error(ex.getMessage(), ex);
                     logger.error("Rolling back experiment creation Exp ID : " + experimentId);
@@ -2411,7 +2411,7 @@ public class AiravataServerHandler implements Airavata.Iface {
                         .build();
                 sharingManagementClient.createEntity(custosId, entity);
 
-                shareEntityWithAdminGatewayGroups(regClient, custosId, existingExperiment.getGatewayId(), entity);
+                shareEntityWithAdminGatewayGroups(authzToken, regClient, custosId, existingExperiment.getGatewayId(), entity);
 
             } catch (Exception ex) {
                 logger.error(ex.getMessage(), ex);
@@ -2692,7 +2692,7 @@ public class AiravataServerHandler implements Airavata.Iface {
                     .build();
             sharingManagementClient.createEntity(custosId, entity);
 
-            shareEntityWithAdminGatewayGroups(regClient, custosId, gatewayId, entity);
+            shareEntityWithAdminGatewayGroups(authzToken, regClient, custosId, gatewayId, entity);
 
             registryClientPool.returnResource(regClient);
 
@@ -5611,7 +5611,7 @@ public class AiravataServerHandler implements Airavata.Iface {
             ));
             if (adminRestrictedResourceTypes.contains(resourceType)) {
                 // Prevent removing Admins WRITE access and Read Only Admins READ access
-                GatewayGroups gatewayGroups = retrieveGatewayGroups(regClient, gatewayId, custosId);
+                GatewayGroups gatewayGroups = retrieveGatewayGroups(authzToken,regClient, gatewayId, custosId);
                 if (groupPermissionList.containsKey(gatewayGroups.getAdminsGroupId())
                         && groupPermissionList.get(gatewayGroups.getAdminsGroupId()).equals(ResourcePermissionType.WRITE)) {
                     throw new Exception("Not allowed to remove Admins group's WRITE access.");
@@ -5905,7 +5905,7 @@ public class AiravataServerHandler implements Airavata.Iface {
                             .build();
                     sharingManagementClient.createEntity(custosId, entity);
 
-                    shareEntityWithAdminGatewayGroups(regClient, custosId, domainId, entity);
+                    shareEntityWithAdminGatewayGroups(authzToken, regClient, custosId, domainId, entity);
 
                 } catch (Exception ex) {
                     logger.error(ex.getMessage(), ex);
@@ -6511,7 +6511,7 @@ public class AiravataServerHandler implements Airavata.Iface {
         logger.info("Calling #########  getGatewayGroups");
         RegistryService.Client regClient = registryClientPool.getResource();
         try {
-            GatewayGroups gatewayGroups = retrieveGatewayGroups(regClient, gatewayId, custosId);
+            GatewayGroups gatewayGroups = retrieveGatewayGroups(authzToken, regClient, gatewayId, custosId);
             registryClientPool.returnResource(regClient);
             return gatewayGroups;
         } catch (Exception e) {
@@ -6710,8 +6710,8 @@ public class AiravataServerHandler implements Airavata.Iface {
         experimentPublisher.publish(messageContext);
     }
 
-    private void shareEntityWithAdminGatewayGroups(RegistryService.Client regClient, String custosId, String domainId, Entity entity) throws TException {
-        GatewayGroups gatewayGroups = retrieveGatewayGroups(regClient, domainId, custosId);
+    private void shareEntityWithAdminGatewayGroups(AuthzToken authzToken, RegistryService.Client regClient, String custosId, String domainId, Entity entity) throws TException {
+        GatewayGroups gatewayGroups = retrieveGatewayGroups(authzToken, regClient, domainId, custosId);
 
         PermissionType writePermissionType = PermissionType.newBuilder().setId("WRITE").build();
 
@@ -6809,12 +6809,12 @@ public class AiravataServerHandler implements Airavata.Iface {
         throw new RuntimeException("Unrecognized entity type id: " + exEn.getType());
     }
 
-    private GatewayGroups retrieveGatewayGroups(RegistryService.Client regClient, String gatewayId, String custosId) throws TException {
+    private GatewayGroups retrieveGatewayGroups(AuthzToken authzToken, RegistryService.Client regClient, String gatewayId, String custosId) throws TException {
 
         if (regClient.isGatewayGroupsExists(gatewayId)) {
             return regClient.getGatewayGroups(gatewayId);
         } else {
-            return GatewayGroupsInitializer.initializeGatewayGroups(gatewayId, custosId);
+            return GatewayGroupsInitializer.initializeGatewayGroups(authzToken, gatewayId, custosId);
         }
     }
 

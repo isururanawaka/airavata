@@ -25,6 +25,7 @@ import org.apache.airavata.common.utils.CustosUtils;
 import org.apache.airavata.common.utils.ServerSettings;
 import org.apache.airavata.common.utils.ThriftUtils;
 import org.apache.airavata.model.appcatalog.gatewaygroups.GatewayGroups;
+import org.apache.airavata.model.security.AuthzToken;
 import org.apache.airavata.registry.api.RegistryService;
 import org.apache.airavata.registry.api.client.RegistryServiceClientFactory;
 import org.apache.airavata.registry.api.exception.RegistryServiceException;
@@ -52,7 +53,7 @@ public class GatewayGroupsInitializer {
     private ResourceSecretManagementClient credentialStoreClient;
     private TenantManagementClient tenantManagementClient;
 
-    public static GatewayGroups initializeGatewayGroups(String gatewayId, String custosId) {
+    public static GatewayGroups initializeGatewayGroups(AuthzToken authzToken, String gatewayId, String custosId) {
         RegistryService.Client registryClient = createRegistryClient();
         try {
             GroupManagementClient groupManagementClient = CustosUtils
@@ -64,7 +65,7 @@ public class GatewayGroupsInitializer {
 
             GatewayGroupsInitializer gatewayGroupsInitializer = new GatewayGroupsInitializer(registryClient,
                     groupManagementClient, resourceSecretClient, tenantManagementClient);
-            return gatewayGroupsInitializer.initialize(gatewayId, custosId);
+            return gatewayGroupsInitializer.initialize(authzToken,gatewayId, custosId);
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize a GatewayGroups instance for gateway: " + gatewayId, e);
         } finally {
@@ -83,15 +84,14 @@ public class GatewayGroupsInitializer {
         this.tenantManagementClient = tenantManagementClient;
     }
 
-    public GatewayGroups initialize(String gatewayId, String custosId) throws TException {
+    public GatewayGroups initialize(AuthzToken authzToken, String gatewayId, String custosId) throws TException {
 
         logger.info("Creating a GatewayGroups instance for gateway " + gatewayId + " ...");
 
         GatewayGroups gatewayGroups = new GatewayGroups();
         gatewayGroups.setGatewayId(gatewayId);
 
-        Tenant tenant = tenantManagementClient.getTenant(custosId);
-
+        Tenant tenant = tenantManagementClient.getTenant(authzToken.getAccessToken(), custosId);
         String ownerId = tenant.getAdminUsername();
 
 

@@ -150,7 +150,7 @@ public class TenantProfileServiceHandler implements TenantProfileService.Iface {
             updatedGateway.setAiravataInternalGatewayId(updatedGateway.getGatewayId());
 
             if (updatedGateway.getGatewayApprovalStatus().equals(GatewayApprovalStatus.DEACTIVATED)) {
-                tenantManagementClient.deleteTenant(updatedGateway.getOauthClientId());
+                tenantManagementClient.deleteTenant(authzToken.getAccessToken(), updatedGateway.getOauthClientId());
             }
 
             // replicate tenant at end-places
@@ -196,7 +196,7 @@ public class TenantProfileServiceHandler implements TenantProfileService.Iface {
             logger.info("Deleting Airavata gateway-profile with ID: " + gatewayId + "Internal ID: " + airavataInternalGatewayId);
             Gateway gateway = registryClient.getGateway(airavataInternalGatewayId);
 
-            tenantManagementClient.deleteTenant(gateway.getOauthClientId());
+            tenantManagementClient.deleteTenant(authzToken.getAccessToken(), gateway.getOauthClientId());
 
             // delete tenant at end-places
             dbEventPublisherUtils.publish(EntityType.TENANT, CrudType.DELETE,

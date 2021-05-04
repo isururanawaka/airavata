@@ -336,7 +336,7 @@ public class KeyCloakSecurityManager implements AiravataSecurityManager {
     private GatewayGroupMembership getGatewayGroupMembership(AuthzToken authzToken, String username, String token, String gatewayId) throws Exception {
         validateToken(authzToken);
         String custosId = authzToken.getClaimsMap().get(Constants.CUSTOS_ID);
-        GatewayGroups gatewayGroups = getGatewayGroups(gatewayId, custosId);
+        GatewayGroups gatewayGroups = getGatewayGroups(authzToken, gatewayId, custosId);
 
         GetAllGroupsResponse getAllGroupsResponse =  groupManagementClient.getAllGroupsOfUser(custosId, username);
 
@@ -352,11 +352,11 @@ public class KeyCloakSecurityManager implements AiravataSecurityManager {
         return gatewayGroupMembership;
     }
 
-    private GatewayGroups getGatewayGroups(String gatewayId, String custosId) throws Exception {
+    private GatewayGroups getGatewayGroups(AuthzToken authzToken, String gatewayId, String custosId) throws Exception {
         if (registryServiceClient.isGatewayGroupsExists(gatewayId)) {
             return registryServiceClient.getGatewayGroups(gatewayId);
         } else {
-            return GatewayGroupsInitializer.initializeGatewayGroups(gatewayId, custosId);
+            return GatewayGroupsInitializer.initializeGatewayGroups(authzToken,gatewayId, custosId);
         }
     }
 
