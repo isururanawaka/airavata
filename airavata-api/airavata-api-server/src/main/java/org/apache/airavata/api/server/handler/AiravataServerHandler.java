@@ -791,7 +791,7 @@ public class AiravataServerHandler implements Airavata.Iface {
             } catch (Exception ex) {
                 logger.error(ex.getMessage(), ex);
                 logger.error("Rolling back password registration for user " + userName + " and description [" + description + "]");
-                resourceSecretClient.deleteSSHCredential(custosId, response.getToken());
+                resourceSecretClient.deletePWDCredential(custosId, response.getToken());
                 AiravataSystemException ase = new AiravataSystemException();
                 ase.setMessage("Failed to create sharing registry record");
                 throw ase;
