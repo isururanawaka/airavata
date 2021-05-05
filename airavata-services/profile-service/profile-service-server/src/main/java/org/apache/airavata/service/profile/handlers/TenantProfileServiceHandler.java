@@ -268,7 +268,7 @@ public class TenantProfileServiceHandler implements TenantProfileService.Iface {
 
             if (gateways != null && !gateways.isEmpty()) {
                 for (Gateway gateway : gateways) {
-                    if (gateway.getRequesterUsername().equals(requesterUsername)) {
+                    if (gateway.getRequesterUsername() != null && gateway.getRequesterUsername().equals(requesterUsername)) {
                         gateway.setAiravataInternalGatewayId(gateway.getGatewayId());
                         selectedGateways.add(gateway);
                     }
