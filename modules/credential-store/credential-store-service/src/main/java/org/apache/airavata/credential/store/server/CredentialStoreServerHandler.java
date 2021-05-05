@@ -527,9 +527,9 @@ public class CredentialStoreServerHandler implements CredentialStoreService.Ifac
                 log.info("Public key" + sshCredential.getPublicKey());
                 log.info("Passphrase " + sshCredential.getPassphrase());
 
-                resourceSecretManagementClient.addSSHCredential(summary.getToken(),
-                        sshCredential.getPassphrase(), sshCredential.getPrivateKey(), sshCredential.getPublicKey(),
-                        custosId, sshCredential.getDescription(), sshCredential.getUsername());
+//                resourceSecretManagementClient.addSSHCredential(summary.getToken(),
+//                        sshCredential.getPassphrase(), sshCredential.getPrivateKey(), sshCredential.getPublicKey(),
+//                        custosId, sshCredential.getDescription(), sshCredential.getUsername());
 
                 log.info("Successfully migrated  " + sshCredential.getToken());
 

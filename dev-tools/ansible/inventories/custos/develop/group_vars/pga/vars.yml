@@ -21,8 +21,8 @@
 ---
 pga_repo: "https://github.com/apache/airavata-php-gateway.git"
 pga_git_branch: "custos-integration-latest"
-user: "pga"
-group: "pga"
+user: "airavata"
+group: "airavata"
 doc_root_dir: "/var/www/portals/aci-scigap"
 vhost_servername: "aci.pga.scigap.org"
 vhost_ssl: True
