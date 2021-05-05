@@ -542,7 +542,7 @@ public class CredentialStoreServerHandler implements CredentialStoreService.Ifac
                 log.info("Description " + sshCredential.getDescription());
                 log.info("Portal username " + sshCredential.getPortalUserName());
                 resourceSecretManagementClient.addPasswordCredential(summary,
-                        custosId, sshCredential.getDescription(), sshCredential.getLoginUserName(),
+                        custosId, sshCredential.getDescription(), sshCredential.getLoginUserName(),sshCredential.getLoginUserName(),
                         sshCredential.getPassword());
 
                 log.info("Successfully migrated  " + sshCredential.getToken());

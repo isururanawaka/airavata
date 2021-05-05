@@ -27,13 +27,13 @@ public class Migrator {
     private CredentialStoreService.Client credentialStoreServiceClient;
 
 
-    public Migrator(String profileServiceHost, int profileServicePort, String sharingServiceHost, int sharingServicePort, int credentialStorePort) throws UserProfileServiceException, TenantProfileServiceException, IamAdminServicesException, GroupManagerServiceException, SharingRegistryException, CredentialStoreException {
+    public Migrator(String profileServiceHost, int profileServicePort, String sharingServiceHost, int sharingServicePort, String csHost, int credentialStorePort) throws UserProfileServiceException, TenantProfileServiceException, IamAdminServicesException, GroupManagerServiceException, SharingRegistryException, CredentialStoreException {
         userprofileClient = ProfileServiceClientFactory.createUserProfileServiceClient(profileServiceHost, profileServicePort);
         tenantProfileClient = ProfileServiceClientFactory.createTenantProfileServiceClient(profileServiceHost, profileServicePort);
         iamAdminClient = ProfileServiceClientFactory.createIamAdminServiceClient(profileServiceHost, profileServicePort);
         groupManagerServiceClient = ProfileServiceClientFactory.createGroupManagerServiceClient(profileServiceHost, profileServicePort);
         sharingRegistryClient =  SharingRegistryServiceClientFactory.createSharingRegistryClient(sharingServiceHost, sharingServicePort);
-        credentialStoreServiceClient = CredentialStoreClientFactory.createAiravataCSClient(sharingServiceHost, credentialStorePort);
+        credentialStoreServiceClient = CredentialStoreClientFactory.createAiravataCSClient(csHost, credentialStorePort);
     }
 
     public boolean migrateUserProfile(String gatewayId, String custosId)
