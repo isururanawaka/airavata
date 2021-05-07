@@ -142,16 +142,6 @@ sharing_registry_port: 7878
 profile_service_host: "{{ groups['api-orch'][0] }}"
 profile_service_port: 8962
 
-# Keycloak
-keycloak_ssl_keystore_file: "{{ inventory_dir }}/files/keycloak.jks"
-keycloak_ssl_keystore_password: "{{ vault_keycloak_ssl_keystore_password }}"
-keycloak_db_host: "{{ groups['database'][0] }}"
-keycloak_db_username: "keycloak"
-keycloak_db_password: "{{ vault_keycloak_db_password }}"
-keycloak_master_account_username: "admin"
-keycloak_master_account_password: "{{ vault_keycloak_master_account_password }}"
-keycloak_vhost_servername: "iamdev.scigap.org"
-
 # Helix
 helix_version: 0.7.1
 helix_url: http://www-us.apache.org/dist//helix/{{helix_version}}/binaries/helix-core-{{helix_version}}-pkg.tar
@@ -180,12 +170,12 @@ job_monitor_broker_consumer_group: "MonitoringConsumer"
 parser_broker_url: "{{ groups['kafka'][0] }}:{{ kafka_listener_port }}"
 parser_broker_topic: "completed-messages"
 parser_broker_consumer_group: "ParsingConsumer"
-parser_storage_resource_id: "pgadev.scigap.org_7ddf28fd-d503-4ff8-bbc5-3279a7c3b99e"
+parser_storage_resource_id: "aci.pga.scigap.org_b5d2f81a-2395-4df6-b05f-1bdeb568e324"
 parser_broker_publisher_id: "ParserProducer"
 
 # Custos related vairables
-custos_server_host: "custos.scigap.org"
-custos_server_port: 31499
+custos_server_host: "service.staging.usecustos.org"
+custos_server_port: 30170
 custos_client_id: "{{ vault_custos_client_id }}"
 custos_client_sec: "{{ vault_custos_client_secret }}"
 
