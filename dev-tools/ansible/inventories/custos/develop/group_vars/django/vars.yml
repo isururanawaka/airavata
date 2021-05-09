@@ -19,8 +19,8 @@
 #
 
 ---
-user: "pga"
-group: "pga"
+user: "airavata"
+group: "airavata"
 gateway_data_store_hostname: "aci.pga.scigap.org"
 gateway_data_store_resource_id: "aci.pga.scigap.org_b5d2f81a-2395-4df6-b05f-1bdeb568e324"
 django_wsgi_processes: 1

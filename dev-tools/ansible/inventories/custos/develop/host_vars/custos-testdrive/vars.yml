@@ -28,21 +28,21 @@ ssl_certificate_chain_file: "/etc/letsencrypt/live/aci.general.scigap.org/fullch
 ssl_certificate_key_file: "/etc/letsencrypt/live/aci.general.scigap.org/privkey.pem"
 
 ## Keycloak related variables
-tenant_domain: "cyberwater"
+tenant_domain: "custos-testdrive"
 custos_client_id: "{{ vault_custos_client_id }}"
 custos_client_sec: "{{ vault_custos_client_sec }}"
-custos_host: "custos.scigap.org"
-custos_port: 31499
+custos_host: "service.staging.usecustos.org"
+custos_port: 30170
 
 auth_options:
   password:
-    name: "CyberWater"
+    name: "custos-testdrive"
   external:
     - name: "Existing Institute Login"
       idp_alias: "cilogon"
 
-gateway_id: "cyberwater"
-experiment_data_dir: "{{ user_data_dir }}/django-cyberwater"
+gateway_id: "custos-testdrive"
+experiment_data_dir: "{{ user_data_dir }}/django-custos-testdrive"
 # gateway_data_store_ssh_public_key: "TODO"
 
 portal_email_host: "smtp.gmail.com"
@@ -51,5 +51,5 @@ portal_email_tls: true
 portal_email_username: "pga.airavata@gmail.com"
 portal_email_password: "{{ vault_portal_email_password }}"
 portal_server_email: "{{ portal_email_username }}"
-portal_title: "Beta Cyberwater Gateway"
+portal_title: " Custos Testdrive"
 ...

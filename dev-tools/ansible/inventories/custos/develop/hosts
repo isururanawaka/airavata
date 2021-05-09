@@ -28,4 +28,4 @@
 149.165.171.13
 
 [django]
-cyberwater ansible_host=149.165.171.13
+custos-testdrive ansible_host=149.165.171.13
