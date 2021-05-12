@@ -30,6 +30,8 @@ public class Configuration {
     private int iterationsPerUser;
     private int randomMSDelayWithinSubmissions;
 
+    private Custos custos;
+
 
     private AuthzToken authzToken;
 
@@ -38,8 +40,10 @@ public class Configuration {
         if (authzToken == null) {
             System.out.print("Enter password for user " + getUserId() + " in gateway " + getGatewayId() + " : ");
             String pw = new String(System.console().readPassword());
-            authzToken = Authenticator.getAuthzToken(getUserId(), pw, getGatewayId(),
-                    getKeycloakUrl(), getKeycloakClientId(), getKeycloakClientSecret());
+            authzToken = custos.enable ? Authenticator.getAuthzTokenFromCustos(getUserId(), pw,getGatewayId(),
+                    getCustos().getId(), getCustos().getSecret(), getCustos().getHost(), getCustos().getPort()) :
+                    Authenticator.getAuthzToken(getUserId(), pw, getGatewayId(),
+                            getKeycloakUrl(), getKeycloakClientId(), getKeycloakClientSecret());
         }
         return authzToken;
     }
@@ -203,6 +207,68 @@ public class Configuration {
         }
     }
 
+    public static class Custos {
+        private boolean enable;
+        private String id;
+        private String secret;
+        private String host;
+        private int port;
+
+        public Custos() {
+
+        }
+
+        public Custos(boolean enable, String id, String secret, String host, int port) {
+            this.enable = enable;
+            this.id = id;
+            this.secret = secret;
+            this.host = host;
+            this.port = port;
+
+        }
+
+        public boolean getEnable() {
+            return enable;
+        }
+
+        public void setEnable(boolean enable) {
+            this.enable = enable;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getSecret() {
+            return secret;
+        }
+
+        public void setSecret(String secret) {
+            this.secret = secret;
+        }
+
+        public String getHost() {
+            return host;
+        }
+
+        public void setHost(String host) {
+            this.host = host;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public void setPort(int port) {
+            this.port = port;
+        }
+    }
+
+
     public String getKeycloakUrl() {
         return keycloakUrl;
     }
@@ -225,5 +291,13 @@ public class Configuration {
 
     public void setKeycloakClientSecret(String keycloakClientSecret) {
         this.keycloakClientSecret = keycloakClientSecret;
+    }
+
+    public Custos getCustos() {
+        return custos;
+    }
+
+    public void setCustos(Custos custos) {
+        this.custos = custos;
     }
 }

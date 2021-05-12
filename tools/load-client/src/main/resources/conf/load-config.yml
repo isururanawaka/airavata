@@ -2,7 +2,7 @@ apiHost: apidev.scigap.org
 apiPort: 9930
 configurations:
   - experimentBaseName: "TestEcho"
-    userId: "dimuthu"
+    userId: "admin"
     gatewayId: "seagrid"
     projectId: "DefaultProject_7ac38275-0ca1-433a-ab6a-630c8c1df2ef"
     applicationInterfaceId: "Echo_3f480d1f-ea86-4018-94bb-015423d66a1c"
@@ -11,6 +11,13 @@ configurations:
     keycloakUrl: "https://iamdev.scigap.org/auth"
     keycloakClientId: "pga"
     keycloakClientSecret: "secret"
+
+    custos:
+      enable: True
+      id: ""
+      secret: ""
+      host: "service.staging.usecustos.org"
+      port: 30170
 
     inputs:
       - name: "Input-to-Echo"
